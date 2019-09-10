@@ -160,9 +160,25 @@ class REST
                 break;
         }
 
-        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        //curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($ch, CURLOPT_HEADER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+
+        $headers = [];
+        // this function is called by curl for each header received
+        curl_setopt($ch, CURLOPT_HEADERFUNCTION,
+            function($curl, $header) use (&$headers)
+            {
+                $len = strlen($header);
+                $header = explode(':', $header, 2);
+                if (count($header) < 2) // ignore invalid headers
+                    return $len;
+
+                $headers[strtolower(trim($header[0]))][] = trim($header[1]);
+
+                return $len;
+            }
+        );
 
         if($this->_config->usingSandbox()){
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //Temporary workaround because https://api.sandbox.dnsmadeeasy.com uses a bad certificate
@@ -173,6 +189,7 @@ class REST
         }
 
         $result = curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
         //Something bad has happened, for example the API is down, etc.
         if (curl_errno($ch)) {
@@ -183,7 +200,7 @@ class REST
 
         $info = curl_getinfo($ch);
         $request = new Request($info, $content);
-        $response = new Response($result, $info['total_time']);
+        $response = new Response($result, $info['total_time'], $headers, $http_code);
 
         //If debug mode is on, output the debug messages.
         if ($this->_config->getDebug()) {

@@ -108,20 +108,20 @@ class Response
      * @param string $response  The response containing the headers and body as a string.
      * @param float  $timeTaken The time taken in seconds.
      */
-    public function __construct($response, $timeTaken)
+    public function __construct($response, $timeTaken, $headers, $http_code)
     {
         $this->_timeTaken = $timeTaken;
 
-        $parsed = $this->parseMessage($response);
+        //$parsed = $this->parseMessage($response);
 
-        $this->_rawHeaders = $parsed['headers'];
-        $this->_body = trim($this->fixJSON($parsed['body']));
+        //$this->_rawHeaders = $parsed['headers'];
+        $this->_body = trim($this->fixJSON($response));
 
-        $parsedHeaders = $this->parseHeaders($parsed['headers']);
+        //$parsedHeaders = $this->parseHeaders($parsed['headers']);
 
-        $this->_statusCode = (int) $parsedHeaders['statusCode'];
-        $this->_version = $parsedHeaders['version'];
-        $this->_headers = $parsedHeaders['headers'];
+        $this->_statusCode = $http_code;
+        //$this->_version = $parsedHeaders['version'];
+        $this->_headers = $headers;
     }
 
     /**
