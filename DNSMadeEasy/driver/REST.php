@@ -160,7 +160,7 @@ class REST
                 break;
         }
 
-        //curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($ch, CURLOPT_HEADER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 
