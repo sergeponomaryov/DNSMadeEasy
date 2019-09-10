@@ -210,6 +210,9 @@ class REST
 
         curl_close($ch);
 
-        return new Result($response);
+        $result = new Result($response);
+        print_r($result);
+        die;
+        return $result;
     }
 }
