@@ -161,7 +161,6 @@ class REST
         }
 
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
-        //curl_setopt($ch, CURLOPT_HEADER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 
         $headers = [];
@@ -174,7 +173,7 @@ class REST
                 if (count($header) < 2) // ignore invalid headers
                     return $len;
 
-                $headers[strtolower(trim($header[0]))][] = trim($header[1]);
+                $headers[strtolower(trim($header[0]))] = trim($header[1]);
 
                 return $len;
             }
@@ -199,6 +198,7 @@ class REST
         }
 
         $info = curl_getinfo($ch);
+
         $request = new Request($info, $content);
         $response = new Response($result, $info['total_time'], $headers, $http_code);
 
@@ -214,3 +214,4 @@ class REST
         return $result;
     }
 }
+
