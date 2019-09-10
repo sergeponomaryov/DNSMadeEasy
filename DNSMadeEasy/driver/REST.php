@@ -211,8 +211,6 @@ class REST
         curl_close($ch);
 
         $result = new Result($response);
-        print_r($result);
-        die;
         return $result;
     }
 }
