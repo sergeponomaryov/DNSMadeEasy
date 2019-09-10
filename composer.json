@@ -1,5 +1,5 @@
 {
-	"name" : "f21/dnsmadeeasy",
+	"name" : "sergeponomaryov/dnsmadeeasy",
 	"description" : "A simple php library to work with DNSMadeEasy's API v2.0",
 	"type" : "library",
 	"authors" : [{
