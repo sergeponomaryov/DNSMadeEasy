@@ -81,7 +81,7 @@ class Result
 
             if (!$this->errors) {
                 // API calls don't always provide an error :(
-                $this->errors[] = 'An error occurred, however, no error message was given. Use the response body, HTTP status code and URL to help troubleshoot the issue.';
+                $this->errors[] = $response->getBody();
             }
 
         //If things went well.
