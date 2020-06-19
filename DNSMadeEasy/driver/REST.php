@@ -132,7 +132,7 @@ class REST
         $ch = curl_init($url . $this->_uriTemplate->expand($command, $uriParameters));
 
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 300);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getAuthenticationHeaders());
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
