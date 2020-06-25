@@ -104,24 +104,15 @@ class Response
     );
 
     /**
-     * These methods won't receive a response body
-     * @var array
-     */
-    private $_httpMethodsWithoutBody = array(
-        'delete',
-        'put',
-    );
-
-    /**
      * Construct the driver response.
      * @param string $response  The response containing the headers and body as a string.
      * @param float  $timeTaken The time taken in seconds.
      */
-    public function __construct($response, $timeTaken, $method = false)
+    public function __construct($response, $timeTaken, $headers, $http_code)
     {
         $this->_timeTaken = $timeTaken;
 
-        $parsed = $this->parseMessage($response, $method);
+        //$parsed = $this->parseMessage($response);
 
         //$this->_rawHeaders = $parsed['headers'];
         $this->_body = trim($this->fixJSON($response));
@@ -202,7 +193,7 @@ class Response
      * @throws RESTException
      * @return array
      */
-    private function parseMessage($message, $method)
+    private function parseMessage($message)
     {
         assert(is_string($message));
 
@@ -216,11 +207,7 @@ class Response
         $border  = strpos($message, $barrier);
 
         if ($border === false) {
-	    if (in_array($method,$this->_httpMethodsWithoutBody)) {
-                $border = strlen($message);
-            } else {
-                throw new RESTException('Got an invalid response from the server.');
-            }
+            throw new RESTException('Got an invalid response from the server.');
         }
 
         $result = array();
