@@ -44,11 +44,11 @@ class Client
      * @param string  $secretKey  DNSMadeEasy secret key.
      * @param boolean $useSandbox Whether to use the sandbox or not.
      */
-    public function __construct($apiKey, $secretKey, $useSandbox = false)
+    public function __construct($apiKey, $secretKey, $useSandbox = false, $timeout=false)
     {
         //Set up the driver.
         $this->_config = new Configuration($apiKey, $secretKey, $useSandbox);
-        $this->_driver = new REST($this->_config);
+        $this->_driver = new REST($this->_config, $timeout);
     }
     
     public function __call($method, $args)

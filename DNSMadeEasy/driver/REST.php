@@ -39,15 +39,19 @@ class REST
      */
     private $_uriTemplate;
 
+    private $timeout;
+
     /**
      * Constructs the driver.
      * @param Configuration $config The configuration object.
      */
-    public function __construct(Configuration $config)
+    public function __construct(Configuration $config, $timeout=false)
     {
         $this->_config = $config;
         $this->_debugger = new Debugger();
         $this->_uriTemplate = new URITemplate();
+        if($timeout) $this->timeout = $timeout;
+        else $this->timeout = 30;
     }
 
     /**
@@ -132,7 +136,7 @@ class REST
         $ch = curl_init($url . $this->_uriTemplate->expand($command, $uriParameters));
 
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getAuthenticationHeaders());
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
