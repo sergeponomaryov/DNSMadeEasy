@@ -130,4 +130,15 @@ class Records
     	}
         
     }
+
+    /**
+     * Delete all records within a domain.
+     * @param  integer             $domainId The id of the domain.
+     * @return \DNSMadeEasy\Result
+     */
+    public function deleteAll($domainId)
+    {
+        return $this->_driver->delete("/dns/managed/$domainId/records");
+    }
+
 }
